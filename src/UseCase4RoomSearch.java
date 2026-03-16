@@ -2,77 +2,103 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * MAIN CLASS UseCase3InventorySetup
+ * MAIN CLASS UseCase4RoomSearch
  *
- * Use Case 3: Centralized Room Inventory Management
+ * Use Case 4: Room Search & Availability Check
  *
- * @version 3.1
+ * @version 4.0
  */
-public class UseCase3InventorySetup {
+public class UseCase4RoomSearch {
 
     public static void main(String[] args) {
 
-        System.out.println("Hotel Room Inventory Status");
+        System.out.println("Room Search");
 
         // Create room objects
         Room singleRoom = new SingleRoom();
         Room doubleRoom = new DoubleRoom();
         Room suiteRoom = new SuiteRoom();
 
-        // Initialize centralized inventory
+        // Initialize inventory
         RoomInventory inventory = new RoomInventory();
+
+        // Search service
+        RoomSearchService searchService = new RoomSearchService();
+
+        // Perform search
+        searchService.searchAvailableRooms(
+                inventory,
+                singleRoom,
+                doubleRoom,
+                suiteRoom
+        );
+    }
+}
+
+/**
+ * CLASS RoomSearchService
+ *
+ * Use Case 4: Room Search & Availability Check
+ *
+ * @version 4.0
+ */
+class RoomSearchService {
+
+    public void searchAvailableRooms(
+            RoomInventory inventory,
+            Room singleRoom,
+            Room doubleRoom,
+            Room suiteRoom) {
 
         Map<String, Integer> availability = inventory.getRoomAvailability();
 
         // Single Room
-        System.out.println("\nSingle Room:");
-        singleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + availability.get("Single"));
+        if (availability.get("Single") > 0) {
+            System.out.println("\nSingle Room:");
+            singleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Single"));
+        }
 
         // Double Room
-        System.out.println("\nDouble Room:");
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + availability.get("Double"));
+        if (availability.get("Double") > 0) {
+            System.out.println("\nDouble Room:");
+            doubleRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Double"));
+        }
 
         // Suite Room
-        System.out.println("\nSuite Room:");
-        suiteRoom.displayRoomDetails();
-        System.out.println("Available Rooms: " + availability.get("Suite"));
+        if (availability.get("Suite") > 0) {
+            System.out.println("\nSuite Room:");
+            suiteRoom.displayRoomDetails();
+            System.out.println("Available: " + availability.get("Suite"));
+        }
     }
 }
 
 /**
  * CLASS RoomInventory
  *
- * Use Case 3: Centralized Room Inventory Management
- *
- * @version 3.1
+ * @version 4.0
  */
 class RoomInventory {
 
-    // Stores available room count for each room type
-    // Key = Room Type , Value = Available Count
     private Map<String, Integer> roomAvailability;
 
-    // Constructor
     public RoomInventory() {
         roomAvailability = new HashMap<>();
         initializeInventory();
     }
 
-    // Initialize default availability
     private void initializeInventory() {
         roomAvailability.put("Single", 5);
         roomAvailability.put("Double", 3);
         roomAvailability.put("Suite", 2);
     }
 
-    // Return availability map
     public Map<String, Integer> getRoomAvailability() {
         return roomAvailability;
     }
 
-    // Update availability
     public void updateAvailability(String roomType, int count) {
         roomAvailability.put(roomType, count);
     }
@@ -81,7 +107,7 @@ class RoomInventory {
 /**
  * ABSTRACT CLASS Room
  *
- * @version 3.0
+ * @version 4.0
  */
 abstract class Room {
 
@@ -105,7 +131,7 @@ abstract class Room {
 /**
  * CLASS SingleRoom
  *
- * @version 3.0
+ * @version 4.0
  */
 class SingleRoom extends Room {
 
@@ -117,7 +143,7 @@ class SingleRoom extends Room {
 /**
  * CLASS DoubleRoom
  *
- * @version 3.0
+ * @version 4.0
  */
 class DoubleRoom extends Room {
 
@@ -129,7 +155,7 @@ class DoubleRoom extends Room {
 /**
  * CLASS SuiteRoom
  *
- * @version 3.0
+ * @version 4.0
  */
 class SuiteRoom extends Room {
 
